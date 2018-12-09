@@ -1,0 +1,90 @@
+{% extends 'data/base.html' %}
+
+{% block page_title %} Label Data {% endblock %}
+
+{% block content %}
+    <style>
+        #trash_flash, #plus_flash, #nothing_todo, #incorrect_flash {
+            z-index: 99;
+            position: fixed;
+            left: 50px;
+            bottom: 50px;
+            box-shadow: 0px 0px 8px #0b2e13;
+            display: none;
+        }
+    </style>
+
+    <script type="text/javascript">
+
+        var labelPayload = [];
+        var sentence_id = null;
+        var isDeleted = false;
+
+    </script>
+
+    <div id="sticky_button">
+        <button class="btn btn-primary" onclick="saveLabels('{% url 'data:save_labels' %}')">Save All Labels</button>
+    </div>
+
+    <div class="alert alert-primary sticky_flash" id="plus_flash" role="alert">
+        <i class="fa fa-plus"></i> Label Added!
+    </div>
+
+    <div class="alert alert-warning sticky_flash" id="trash_flash" role="alert">
+        <i class="fa fa-trash-alt"></i> Label Removed!
+    </div>
+
+    <div class="alert alert-warning sticky_flash" id="nothing_todo" role="alert">
+        <i class="fa fa-times"></i> Nothing to do!
+    </div>
+
+    <div class="alert alert-warning sticky_flash" id="incorrect_flash" role="alert">
+        <i class="fa fa-plus"></i> Incorrect Label Added!
+    </div>
+
+
+    <form method="post" action="{% url 'data:label' %}">
+    <div class="row">
+        <div class="col-md-7 p-1 text-center">
+            <b>Sentence</b>
+        </div>
+        <div class="col-md-2 p-1 text-center">
+            <b>Aspect</b>
+        </div>
+        <div class="col-md-2 p-1 text-center">
+            <b>Polarity p/n</b>
+        </div>
+        <div class="col-md-1 p-1 text-center">
+
+        </div>
+    </div>
+    {% for sentence in sentences %}
+    <div class="row" id="row{{ sentence.id }}">
+        <div class="col-md-7 p-1">
+            <input type="text" class="form-control" readonly disabled name="sen{{ sentence.id }}" id="sen{{ sentence.id }}" value="{{ sentence.text }}"/>
+        </div>
+        <div class="col-md-2 p-1">
+            <select name='asp{{ sentence.id }}' class="custom-select">
+                <option value="genel" selected>Genel</option>
+                <option value="yemek">Yemek</option>
+                <option value="servis">Servis</option>
+                <option value="fiyat">Fiyat</option>
+            </select>
+        </div>
+        <div class="col-md-2 p-1">
+            <select name='pol{{ sentence.id }}' class="custom-select">
+                <option value="True" selected>Positive</option>
+                <option value="False">Negative</option>
+            </select>
+        </div>
+        <div class="col-md-1">
+            <a href="#" onclick="add_label(this.id); return false;" id="plus{{ sentence.id }}" sentence-id="{{ sentence.id }}"><i class="fa fa-plus fa-sm pt-3 pr-2"></i></a>
+            <a href="#" onclick="remove_label(this.id); return false;" id="trash{{ sentence.id }}" sentence-id="{{ sentence.id }}"><i class="fa fa-trash-alt fa-sm pr-2 pt-3"></i></a>
+            <a href="#" onclick="incorrect_label(this.id); return false;" id="incorrect{{ sentence.id }}" sentence-id="{{ sentence.id }}"><i class="fa fa-times fa-sm pt-3"></i></a>
+        </div>
+    </div>
+    {% endfor %}
+
+    </form>
+
+{% endblock %}

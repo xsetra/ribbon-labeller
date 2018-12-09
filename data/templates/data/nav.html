@@ -1,0 +1,31 @@
+<nav class="navbar navbar-fixed-top navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+
+        <a class="navbar-brand" href="{% url 'data:home' %}">Ribbon</a>
+
+
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav nav ml-auto">
+              <li class="nav-item {{ nav_home }}">
+                <a class="nav-link " href="{% url 'data:home' %}">Home</a>
+              </li>
+              <li class="nav-item {{ nav_label }}">
+                <a class="nav-link " href="{% url 'data:label' %}">Label Data</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDrop" role='button' data-toggle="dropdown" href="#" aria-expanded="false" aria-haspopup="true"><i class="fa fa-user"></i> <strong>{{ user }}</strong></a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDrop">
+                      <a class="dropdown-item" href="#">Change Password</a>
+                      <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                  </div>
+              </li>
+            </ul>
+          </div>
+
+    </div>
+
+</nav>

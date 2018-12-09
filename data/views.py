@@ -14,7 +14,11 @@ def label(request):
     sentences_qs = org_sentences.difference(labeled_sentences)[:20]
     sentences = Sentence.objects.filter(id__in=sentences_qs)
 
-    return render(request, 'data/label.html', context={'sentences': sentences, 'nav_label': 'active'})
+    context = {'nav_label': 'active'}
+    if sentences.count() != 0:
+        context['sentences'] = sentences
+
+    return render(request, 'data/label.html', context=context)
 
 @login_required
 def index(request):

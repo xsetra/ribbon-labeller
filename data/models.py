@@ -8,6 +8,7 @@ class Sentence(models.Model):
     text = models.TextField('Sentence')
     aspect = models.CharField('Aspect', max_length=60, null=False, default='')
     polarity = models.BooleanField('Polarity', null=False, default=True)
+    company = models.TextField('Company', max_length=60, null=False, default='')
 
 
 class LabeledSentence(models.Model):

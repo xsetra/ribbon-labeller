@@ -19,7 +19,7 @@
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDrop" role='button' data-toggle="dropdown" href="#" aria-expanded="false" aria-haspopup="true"><i class="fa fa-user"></i> <strong>{{ user }}</strong></a>
                   <div class="dropdown-menu" aria-labelledby="navbarDrop">
-                      <a class="dropdown-item" href="#">Change Password</a>
+                      <a class="dropdown-item" href="{% url 'change_password' %}">Change Password</a>
                       <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
                   </div>
               </li>

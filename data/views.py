@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from data.models import Sentence, LabeledSentence
 import json
+import random
 
 # Create your views here.
 
@@ -10,9 +11,13 @@ import json
 def label(request):
     org_sentences = Sentence.objects.all().values_list('id')
     labeled_sentences = LabeledSentence.objects.filter(contributor=request.user).values_list('sentence__id')
+    sentences_qs = org_sentences.difference(labeled_sentences)
 
-    sentences_qs = org_sentences.difference(labeled_sentences)[:20]
-    sentences = Sentence.objects.filter(id__in=sentences_qs)
+    list_sentences = list(sentences_qs)
+    random.shuffle(list_sentences)
+    shuffeled_sentences = [s[0] for s in list_sentences[:20]]
+
+    sentences = Sentence.objects.filter(id__in=shuffeled_sentences)
 
     context = {'nav_label': 'active'}
     if sentences.count() != 0:

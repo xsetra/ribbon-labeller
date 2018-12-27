@@ -9,6 +9,7 @@ class Sentence(models.Model):
     aspect = models.CharField('Aspect', max_length=60, null=False, default='')
     polarity = models.BooleanField('Polarity', null=False, default=True)
     company = models.TextField('Company', max_length=60, null=False, default='')
+    sector = models.TextField('Sector', max_length=60, null=False, default='')
 
 
 class LabeledSentence(models.Model):

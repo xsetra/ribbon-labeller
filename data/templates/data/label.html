@@ -12,6 +12,10 @@
             box-shadow: 0px 0px 8px #0b2e13;
             display: none;
         }
+
+        .mt-aspect-polarity {
+            margin-top: 12px;
+        }
     </style>
 
     <script type="text/javascript">
@@ -62,23 +66,24 @@
     {% for sentence in sentences %}
     <div class="row" id="row{{ sentence.id }}">
         <div class="col-md-7 p-1">
-            <input type="text" class="form-control" readonly disabled name="sen{{ sentence.id }}" id="sen{{ sentence.id }}" value="{{ sentence.text }}"/>
+            <textarea class="form-control" name="sen{{ sentence.id }}" id="sen{{ sentence.id }}" readonly>{{ sentence.text }}</textarea>
+
         </div>
-        <div class="col-md-2 p-1">
-            <select name='asp{{ sentence.id }}' class="custom-select">
+        <div class="col-md-2 p-1 align-middle mt-aspect-polarity">
+            <select name='asp{{ sentence.id }}' class="custom-select ">
                 <option value="genel" selected>Genel</option>
                 <option value="yemek">Yemek</option>
                 <option value="servis">Servis</option>
                 <option value="fiyat">Fiyat</option>
             </select>
         </div>
-        <div class="col-md-2 p-1">
+        <div class="col-md-2 p-1 mt-aspect-polarity">
             <select name='pol{{ sentence.id }}' class="custom-select">
                 <option value="True" selected>Positive</option>
                 <option value="False">Negative</option>
             </select>
         </div>
-        <div class="col-md-1">
+        <div class="col-md-1 mt-aspect-polarity">
             <a href="#" onclick="add_label(this.id); return false;" id="plus{{ sentence.id }}" sentence-id="{{ sentence.id }}"><i class="fa fa-plus fa-sm pt-3 pr-2"></i></a>
             <a href="#" onclick="remove_label(this.id); return false;" id="trash{{ sentence.id }}" sentence-id="{{ sentence.id }}"><i class="fa fa-trash-alt fa-sm pr-2 pt-3"></i></a>
             <a href="#" onclick="incorrect_label(this.id); return false;" id="incorrect{{ sentence.id }}" sentence-id="{{ sentence.id }}"><i class="fa fa-times fa-sm pt-3"></i></a>

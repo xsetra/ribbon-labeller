@@ -9,6 +9,18 @@
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"/>
     <link rel="stylesheet" href="{% static 'ribbon.css' %}"/>
     <title>Login</title>
+
+    <style>
+        #hint_id_password2 {
+            display:none;
+        }
+        #hint_id_password1 {
+            display: none;
+        }
+        #hint_id_username {
+            display:none;
+        }
+    </style>
 </head>
 <body>
 
@@ -21,30 +33,18 @@
       <h1 class="p-4">Ribbon</h1>
     </div>
     <!-- Login Form -->
-    <form method="post" action="{% url 'login' %}">
+      {% load crispy_forms_tags %}
+
+    <form method="post" action="{% url 'signup' %}">
     {% csrf_token %}
-    <input type="hidden" name="next" value="{{ next }}">
-    Username{{ form.username }}
-    Password{{ form.password }}
-      <input type="submit" class="btn-login fadeIn fourth" value="Log In">
-
-        {% if form.errors %}
-            <div class="alert alert-danger"><i class="fa fa-times"></i> Your username and password didn't match.</div>
-        {% endif %}
-
-        {% if next %}
-            {% if user.is_authenticated %}
-                <p>You don't have permission to view this page.</p>
-            {% else %}
-                <p>Please login to see this page.</p>
-            {% endif %}
-        {% endif %}
+        {{ form|crispy}}
+        <input type="submit" class="btn-login fadeIn fourth" value="Sign Up">
     </form>
 
     <!-- Remind Passowrd -->
     <div id="formFooter">
       <a class="underlineHover" href="#">Ribbon 2018</a> <br/>
-        <a class="underlineHover" href="{% url 'signup' %}">Sign Up</a>
+        <a class="underlineHover" href="{% url 'login' %}">Login</a>
     </div>
 
   </div>

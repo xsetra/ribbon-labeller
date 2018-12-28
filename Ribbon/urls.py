@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include, reverse_lazy
 from django.contrib.auth import views as auth_views
-from account.views import change_password
+from account.views import change_password, signup
 from account.forms import CustomAuthForm
 
 app_name = 'Ribbon'
@@ -26,5 +26,6 @@ urlpatterns = [
     path('', include('data.urls')),
     path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
     path('accounts/logout/', auth_views.LogoutView.as_view(next_page=reverse_lazy('login')), name='logout'),
-    path('accounts/change/password/', change_password, name='change_password')
+    path('accounts/change/password/', change_password, name='change_password'),
+    path('accounts/signup/', signup, name='signup')
 ]

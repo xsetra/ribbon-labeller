@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from data.models import Sentence, LabeledSentence
 import json
 import random
@@ -8,7 +8,9 @@ import random
 # Create your views here.
 
 @login_required
+@permission_required('data.add_labeledsentence')
 def label(request):
+
     org_sentences = Sentence.objects.all().values_list('id')
     labeled_sentences = LabeledSentence.objects.filter(contributor=request.user).values_list('sentence__id')
     sentences_qs = org_sentences.difference(labeled_sentences)
@@ -30,6 +32,7 @@ def index(request):
     return render(request, 'data/base.html', context={'nav_home': 'active'})
 
 @login_required
+@permission_required('data.add_labeledsentence')
 def save_labels(request):
     labels = json.loads(request.POST['labels'])
     labeled_sentences = []

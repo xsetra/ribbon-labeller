@@ -31,7 +31,28 @@
     <!-- Page Content -->
     <div class="row">
         <div class="col-md-12">
-            {% block content %} Welcome to the HomePage {% endblock %}
+            {% block content %}
+                <div class="row">
+
+                    <div class="col-md-12 text-left">
+                        <br/>
+                        <h3 class="border-bottom">Welcome</h3>
+                        <p>Bu projenin amacı Dataset oluşturma esnasında topluluğun demokratik oy kullanması ile verisetinin etiketlerine karar verebilmektir. <br/>Öncelikle üye olduktan sonra, size Label'lama işlemi için yetki gereklidir. Yetki için bana ulaşın lütfen.<br>Teşekkür ederiz.</p>
+                        <h4>Nasıl Etiketleme Yapılır?</h4>
+                        <p>
+                        <ol>
+                            <li>Cümle okunur ve size göre uygun olan Aspect ve Polarity seçilir.</li>
+                            <li><i class="fa fa-plus fa-sm"></i> ikonuna basarak etiketi onaylarsınız.</li>
+                            <li><i class="fa fa-undo fa-sm"></i> ikonuna basarak etiketin onayını kaldırabilirsiniz.</li>
+                        <li><i class="fa fa-times fa-sm"></i> ikonuna basarak verinin, veri seti olmaya uygun olmadığını belirtmiş olursunuz.</li>
+                        <li>En son olarak "Save All Labels" butonuna basarak etiketleri sisteme kayıt etmiş olursunuz.</li>
+                        <li>Teşekkürler</li>
+                        </ol>
+                        </p>
+                    </div>
+                </div>
+
+             {% endblock %}
         </div>
     </div>
 </div>

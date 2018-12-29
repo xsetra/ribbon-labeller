@@ -70,7 +70,7 @@
 
         </div>
         <div class="col-md-2 p-1 align-middle mt-aspect-polarity">
-            <select name='asp{{ sentence.id }}' class="custom-select ">
+            <select id="asp{{ sentence.id }}" name='asp{{ sentence.id }}' class="custom-select ">
                 <option value="hizmet" selected>Hizmet</option>
                 <option value="yemek_icecek">Yemek ve İçecek</option>
                 <option value="bagaj">Bagaj</option>
@@ -82,14 +82,14 @@
             </select>
         </div>
         <div class="col-md-2 p-1 mt-aspect-polarity">
-            <select name='pol{{ sentence.id }}' class="custom-select">
+            <select id="pol{{ sentence.id }}" name='pol{{ sentence.id }}' class="custom-select">
                 <option value="True" selected>Positive</option>
                 <option value="False">Negative</option>
             </select>
         </div>
         <div class="col-md-1 mt-aspect-polarity">
             <a href="#" onclick="add_label(this.id); return false;" id="plus{{ sentence.id }}" sentence-id="{{ sentence.id }}"><i class="fa fa-plus fa-sm pt-3 pr-2"></i></a>
-            <a href="#" onclick="remove_label(this.id); return false;" id="trash{{ sentence.id }}" sentence-id="{{ sentence.id }}"><i class="fa fa-trash-alt fa-sm pr-2 pt-3"></i></a>
+            <a href="#" onclick="remove_label(this.id); return false;" id="trash{{ sentence.id }}" sentence-id="{{ sentence.id }}"><i class="fa fa-undo fa-sm pr-2 pt-3"></i></a>
             <a href="#" onclick="incorrect_label(this.id); return false;" id="incorrect{{ sentence.id }}" sentence-id="{{ sentence.id }}"><i class="fa fa-times fa-sm pt-3"></i></a>
         </div>
     </div>

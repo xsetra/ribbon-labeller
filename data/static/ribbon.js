@@ -39,11 +39,15 @@ function flash(id) {
 function not_clickable(sentence_id){
     $("#plus"+sentence_id).css({'pointer-events': 'none'});
     $("#incorrect"+sentence_id).css({'pointer-events': 'none'});
+    $("#asp"+sentence_id).css({'pointer-events': 'none'});
+    $("#pol"+sentence_id).css({'pointer-events': 'none'});
 }
 
 function clickable(sentence_id){
     $("#plus"+sentence_id).css({'pointer-events': 'auto'});
     $("#incorrect"+sentence_id).css({'pointer-events': 'auto'});
+    $("#asp"+sentence_id).css({'pointer-events': 'auto'});
+    $("#pol"+sentence_id).css({'pointer-events': 'auto'});
 }
 
 function add_label(plusBtnID) {
@@ -106,5 +110,6 @@ function saveLabels(uri) {
                 alert(resp);
             }
         });
+        location.reload();
     }
 }

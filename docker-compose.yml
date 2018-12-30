@@ -1,0 +1,22 @@
+version: '2'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: ribbon_nginx
+    ports:
+      - "80:8000"
+    volumes:
+      - ./:/usr/src/Ribbon/
+      - ./nginx.conf:/etc/nginx/conf.d/
+    depends_on:
+      - django
+
+  django:
+    build: .
+    container_name: ribbon_app
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --no-input && gunicorn Ribbon.wsgi -b 0.0.0.0:8000"
+    volumes:
+      - ./:/usr/src/Ribbon/
+    expose:
+      - "8000"

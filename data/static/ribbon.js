@@ -128,10 +128,129 @@ function trainModel(uri) {
     var csrftoken = getCookie('csrftoken');
     before_ajax(csrftoken);
 
+    var data = {
+        'epoch': epoch,
+        'dim': dim,
+        'ngram': ngram,
+        'lr': lr,
+        'loss': loss,
+    };
+
     $.post({
         url: uri,
         type: 'POST',
-        data: data,
-        
-    })
+        data: {'model': JSON.stringify(data)},
+        success: function (resp) {
+            alert(resp);
+        },
+        error: function (resp) {
+            alert(resp);
+        }
+    });
+}
+
+
+function predictAspect(uri) {
+    var text = $('#aspect_text').val();
+
+    var csrftoken = getCookie('csrftoken');
+    before_ajax(csrftoken);
+
+    $.post({
+        type: 'POST',
+        url: uri,
+        data: {'text': text},
+        success: function (resp) {
+            alert(resp);
+        },
+        error: function (resp) {
+            alert(resp);
+        },
+    });
+}
+
+function testAspect(uri) {
+    var csrftoken = getCookie('csrftoken');
+    before_ajax(csrftoken);
+
+    $.post({
+        type: 'POST',
+        url: uri,
+        success: function (resp) {
+            alert(resp);
+        },
+        error: function (resp) {
+            alert(resp);
+        },
+    });
+}
+
+
+
+// POLARITY
+
+function trainModelPol(uri) {
+    var epoch = parseInt($('#epoch_p').val());
+    var dim = parseInt($('#dim_p').val());
+    var ngram = parseInt($('#ngram_p').val());
+    var lr = parseFloat($('#lr_p').val());
+    var loss = $('#loss_p').val();
+
+    var csrftoken = getCookie('csrftoken');
+    before_ajax(csrftoken);
+
+    var data = {
+        'epoch': epoch,
+        'dim': dim,
+        'ngram': ngram,
+        'lr': lr,
+        'loss': loss,
+    };
+
+    $.post({
+        url: uri,
+        type: 'POST',
+        data: {'model': JSON.stringify(data)},
+        success: function (resp) {
+            alert(resp);
+        },
+        error: function (resp) {
+            alert(resp);
+        }
+    });
+}
+
+function predictPol(uri) {
+    var text = $('#polarity_text').val();
+
+    var csrftoken = getCookie('csrftoken');
+    before_ajax(csrftoken);
+
+    $.post({
+        type: 'POST',
+        url: uri,
+        data: {'text': text},
+        success: function (resp) {
+            alert(resp);
+        },
+        error: function (resp) {
+            alert(resp);
+        },
+    });
+}
+
+function testPol(uri) {
+    var csrftoken = getCookie('csrftoken');
+    before_ajax(csrftoken);
+
+    $.post({
+        type: 'POST',
+        url: uri,
+        success: function (resp) {
+            alert(resp);
+        },
+        error: function (resp) {
+            alert(resp);
+        },
+    });
 }

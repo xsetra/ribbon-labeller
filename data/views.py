@@ -4,7 +4,8 @@ from django.contrib.auth.decorators import login_required, permission_required
 from data.models import Sentence, LabeledSentence, MLModels
 import json
 import random
-import fasttext
+from .supervised import SupervisedLearner
+
 
 # Create your views here.
 
@@ -85,39 +86,6 @@ def upload_dataset(request):
 
 # MODEL TRAIN TEST PHASE
 
-class SupervisedLearner:
-
-    def __init__(self, train_file, test_file, epoch, dim, word_ngrams, lr, loss):
-        self.train_file = train_file
-        self.test_file = test_file
-        self.epoch = epoch
-        self.dim = dim
-        self.word_ngrams = word_ngrams
-        self.lr = lr
-        self.loss = loss
-        self.classifier = None
-        self.results = None
-        self.output_file = "{}__LOSS{}-LR{}__E{}-D{}-N{}".format(self.train_file,
-                                                                 self.loss,
-                                                                 self.lr,
-                                                                 self.epoch,
-                                                                 self.dim,
-                                                                 self.word_ngrams)
-
-    def build_model(self):
-        self.classifier = fasttext.supervised(input_file=self.train_file,
-                                              epoch=self.epoch,
-                                              dim=self.dim,
-                                              word_ngrams=self.word_ngrams,
-                                              lr=self.lr,
-                                              loss=self.loss,
-                                              output=self.output_file,
-                                              bucket=2000000)
-
-    def test_model(self):
-        self.results = self.classifier.test(self.test_file)
-
-
 @login_required
 @permission_required('admin.add_logentry')
 def train_model(request):
@@ -137,5 +105,112 @@ def train_model(request):
 @login_required
 @permission_required('admin.add_logentry')
 def train_model_aspect(request):
-    pass
+    if request.method == 'POST':
+        model = json.loads(request.POST['model'])
+        learner = SupervisedLearner(epoch=model['epoch'],
+                                    dim=model['dim'],
+                                    word_ngrams=model['ngram'],
+                                    lr=model['lr'],
+                                    loss=model['loss'],
+                                    train_file='aspect_train.txt',
+                                    test_file='aspect_test.txt',
+                                    output_file='aspect')
+        learner.build_model()
+
+        model_meta = MLModels.objects.filter(name='aspect')
+        if model_meta.count() == 0:
+            model_meta = MLModels(epoch=model['epoch'],
+                                  dim=model['dim'],
+                                  ngram=model['ngram'],
+                                  lr=model['lr'],
+                                  loss=model['loss'],
+                                  model_filename='aspect',
+                                  name='aspect')
+            model_meta.save()
+        else:
+            model_meta = model_meta[0]
+            model_meta.epoch = model['epoch']
+            model_meta.dim = model['dim']
+            model_meta.ngram = model['ngram']
+            model_meta.lr = model['lr']
+            model_meta.loss = model['loss']
+            model_meta.save()
+
+        return HttpResponse("Model Trained.")
+
+
+@login_required
+@permission_required('admin.add_logentry')
+def predict_aspect(request):
+    if request.method == 'POST':
+        learner = SupervisedLearner()
+        learner.load_model('aspect.bin')
+        prediction = learner.predict(request.POST['text'])
+        return HttpResponse(prediction)
+
+@login_required
+@permission_required('admin.add_logentry')
+def test_model_aspect(request):
+    if request.method == 'POST':
+        learner = SupervisedLearner(test_file='aspect_test.txt')
+        learner.load_model('aspect.bin')
+        learner.test_model()
+        return HttpResponse('Precision: {} | Recall: {}'.format(learner.results.precision,
+                                                                learner.results.recall))
+
+@login_required
+@permission_required('admin.add_logentry')
+def train_model_polarity(request):
+    if request.method == 'POST':
+        model = json.loads(request.POST['model'])
+        learner = SupervisedLearner(epoch=model['epoch'],
+                                    dim=model['dim'],
+                                    word_ngrams=model['ngram'],
+                                    lr=model['lr'],
+                                    loss=model['loss'],
+                                    train_file='polarity_train.txt',
+                                    test_file='polarity_test.txt',
+                                    output_file='polarity')
+        learner.build_model()
+
+        model_meta = MLModels.objects.filter(name='polarity')
+        if model_meta.count() == 0:
+            model_meta = MLModels(epoch=model['epoch'],
+                                  dim=model['dim'],
+                                  ngram=model['ngram'],
+                                  lr=model['lr'],
+                                  loss=model['loss'],
+                                  model_filename='polarity',
+                                  name='polarity')
+            model_meta.save()
+        else:
+            model_meta = model_meta[0]
+            model_meta.epoch = model['epoch']
+            model_meta.dim = model['dim']
+            model_meta.ngram = model['ngram']
+            model_meta.lr = model['lr']
+            model_meta.loss = model['loss']
+            model_meta.save()
+
+        return HttpResponse("Model Trained.")
+
+
+@login_required
+@permission_required('admin.add_logentry')
+def predict_polarity(request):
+    if request.method == 'POST':
+        learner = SupervisedLearner()
+        learner.load_model('polarity.bin')
+        prediction = learner.predict(request.POST['text'])
+        return HttpResponse(prediction)
+
+@login_required
+@permission_required('admin.add_logentry')
+def test_model_polarity(request):
+    if request.method == 'POST':
+        learner = SupervisedLearner(test_file='polarity_test.txt')
+        learner.load_model('polarity.bin')
+        learner.test_model()
+        return HttpResponse('Precision: {} | Recall: {}'.format(learner.results.precision,
+                                                                learner.results.recall))
 

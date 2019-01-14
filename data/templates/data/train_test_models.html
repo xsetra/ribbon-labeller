@@ -55,7 +55,7 @@
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-md-12 align-right">
-                                                <input type="button" class="btn btn-primary" value="Train Model" />
+                                                <input type="button" onclick="trainModel('{% url 'data:train_aspect' %}')" class="btn btn-primary" value="Train Model" />
                                             </div>
                                         </div>
                                     </form>
@@ -70,7 +70,53 @@
                                 <h5 class="card-title">Test Aspect Model</h5>
                                 <hr class="my-3"/>
                                 <div class="card-text">
-                                    {{ aspect }}
+
+                                    <form action="">
+                                        <div class="form-group row">
+                                            <label for="epoch" class="col-md-2 col-form-label">Epoch</label>
+                                            <div class="col-md-10">
+                                              <input type="number" value="{{ aspect.epoch }}" readonly name="epoch" min="1" max="50" class="form-control" id="epoch">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="dim" class="col-md-2 col-form-label">Dim</label>
+                                            <div class="col-md-10">
+                                              <input type="text" class="form-control" value="{{ aspect.dim }}" readonly/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="ngram" class="col-md-2 col-form-label">NGram</label>
+                                            <div class="col-md-10">
+                                              <input type="number" name="ngram" value="{{ aspect.ngram }}" readonly min="1" max="5" class="form-control" id="ngram">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="lr" class="col-md-2 col-form-label">LR</label>
+                                            <div class="col-md-10">
+                                              <input type="number" name="lr" min="0" value="{{ aspect.lr }}" max="1" step="0.1" readonly  class="form-control" id="lr">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="loss" class="col-md-2 col-form-label">Loss</label>
+                                            <div class="col-md-10">
+                                              <input readonly type="text" class="form-control" value="{{ aspect.loss }}"/>
+                                            </div>
+                                        </div>
+                                        <hr class="my-4"/>
+                                        <div class="form-group row">
+                                            <label for="aspect_text" class="col-md-2 col-form-label">Review</label>
+                                            <div class="col-md-10">
+                                              <input type="text" name='aspect_text' id='aspect_text' class="form-control" value=""/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-md-12 align-right">
+                                                <input type="button" onclick="predictAspect('{% url 'data:predict_aspect' %}')" class="btn btn-primary" value="Predict" />
+                                                <input type="button" onclick="testAspect('{% url 'data:test_aspect' %}')" class="btn btn-primary" value="Test Model"/>
+                                            </div>
+                                        </div>
+                                    </form>
+
                                 </div>
                             </div>
                         </div>
@@ -95,13 +141,13 @@
                                         <div class="form-group row">
                                             <label for="epoch" class="col-md-2 col-form-label">Epoch</label>
                                             <div class="col-md-10">
-                                              <input type="number" value="1" name="epoch" min="1" max="50" class="form-control" id="epoch">
+                                              <input type="number" value="1" name="epoch" min="1" max="50" class="form-control" id="epoch_p">
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label for="dim" class="col-md-2 col-form-label">Dim</label>
                                             <div class="col-md-10">
-                                              <select class="form-control" name="dim" id="dim">
+                                              <select class="form-control" name="dim" id="dim_p">
                                                   <option value="100" selected>100</option>
                                                   <option value="200">200</option>
                                                   <option value="300">300</option>
@@ -111,19 +157,19 @@
                                         <div class="form-group row">
                                             <label for="ngram" class="col-md-2 col-form-label">NGram</label>
                                             <div class="col-md-10">
-                                              <input type="number" name="ngram" value="2" min="1" max="5" class="form-control" id="ngram">
+                                              <input type="number" name="ngram" value="2" min="1" max="5" class="form-control" id="ngram_p">
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label for="lr" class="col-md-2 col-form-label">LR</label>
                                             <div class="col-md-10">
-                                              <input type="number" name="lr" min="0" value="0.5" max="1" step="0.1" class="form-control" id="lr">
+                                              <input type="number" name="lr" min="0" value="0.5" max="1" step="0.1" class="form-control" id="lr_p">
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label for="loss" class="col-md-2 col-form-label">Loss</label>
                                             <div class="col-md-10">
-                                              <select name="loss" id="loss" class="form-control">
+                                              <select name="loss" id="loss_p" class="form-control">
                                                   <option value="hs">hs</option>
                                                   <option value="softmax">softmax</option>
                                               </select>
@@ -131,7 +177,7 @@
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-md-12 align-right">
-                                                <input type="button" class="btn btn-primary" value="Train Model" />
+                                                <input type="button" class="btn btn-primary" onclick="trainModelPol('{% url 'data:train_pol' %}')" value="Train Model" />
                                             </div>
                                         </div>
                                     </form>
@@ -144,8 +190,55 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Test Polarity Model</h5>
+                                <hr class="my-3"/>
                                 <div class="card-text">
-                                    Model Properties and Text Box
+
+                                    <form action="">
+                                        <div class="form-group row">
+                                            <label for="epoch" class="col-md-2 col-form-label">Epoch</label>
+                                            <div class="col-md-10">
+                                              <input type="number" value="{{ polarity.epoch }}" readonly name="epoch" min="1" max="50" class="form-control" id="epoch">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="dim" class="col-md-2 col-form-label">Dim</label>
+                                            <div class="col-md-10">
+                                              <input type="text" class="form-control" value="{{ polarity.dim }}" readonly/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="ngram" class="col-md-2 col-form-label">NGram</label>
+                                            <div class="col-md-10">
+                                              <input type="number" name="ngram" value="{{ polarity.ngram }}" readonly min="1" max="5" class="form-control" id="ngram">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="lr" class="col-md-2 col-form-label">LR</label>
+                                            <div class="col-md-10">
+                                              <input type="number" name="lr" min="0" value="{{ polarity.lr }}" max="1" step="0.1" readonly  class="form-control" id="lr">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="loss" class="col-md-2 col-form-label">Loss</label>
+                                            <div class="col-md-10">
+                                              <input readonly type="text" class="form-control" value="{{ polarity.loss }}"/>
+                                            </div>
+                                        </div>
+                                        <hr class="my-4"/>
+                                        <div class="form-group row">
+                                            <label for="aspect_text" class="col-md-2 col-form-label">Review</label>
+                                            <div class="col-md-10">
+                                              <input type="text" name='aspect_text' id='polarity_text' class="form-control" value=""/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-md-12 align-right">
+                                                <input type="button" onclick="predictPol('{% url 'data:predict_pol' %}')" class="btn btn-primary" value="Predict" />
+                                                <input type="button" onclick="testPol('{% url 'data:test_pol' %}')" class="btn btn-primary" value="Test Model"/>
+                                            </div>
+                                        </div>
+                                    </form>
+
                                 </div>
                             </div>
                         </div>

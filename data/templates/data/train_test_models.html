@@ -1,0 +1,156 @@
+{% extends 'data/base.html' %}
+
+{% block page_title %} Train and Test Model {% endblock %}
+
+{% block content %}
+
+    <div class="jumbotron" style="padding: 2rem 2rem;">
+        <h3>Aspect Section</h3>
+        <hr class="my-4">
+          <div class="row mt-4">
+                    <!-- Train Aspect Model with Parameters -->
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Train New Aspect Model</h5>
+                                <hr class="my-3">
+                                <div class="card-text">
+                                    <form action="">
+                                        <div class="form-group row">
+                                            <label for="epoch" class="col-md-2 col-form-label">Epoch</label>
+                                            <div class="col-md-10">
+                                              <input type="number" value="1" name="epoch" min="1" max="50" class="form-control" id="epoch">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="dim" class="col-md-2 col-form-label">Dim</label>
+                                            <div class="col-md-10">
+                                              <select class="form-control" name="dim" id="dim">
+                                                  <option value="100" selected>100</option>
+                                                  <option value="200">200</option>
+                                                  <option value="300">300</option>
+                                              </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="ngram" class="col-md-2 col-form-label">NGram</label>
+                                            <div class="col-md-10">
+                                              <input type="number" name="ngram" value="2" min="1" max="5" class="form-control" id="ngram">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="lr" class="col-md-2 col-form-label">LR</label>
+                                            <div class="col-md-10">
+                                              <input type="number" name="lr" min="0" value="0.5" max="1" step="0.1" class="form-control" id="lr">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="loss" class="col-md-2 col-form-label">Loss</label>
+                                            <div class="col-md-10">
+                                              <select name="loss" id="loss" class="form-control">
+                                                  <option value="hs">hs</option>
+                                                  <option value="softmax">softmax</option>
+                                              </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-md-12 align-right">
+                                                <input type="button" class="btn btn-primary" value="Train Model" />
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Test Aspect Model -->
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Test Aspect Model</h5>
+                                <hr class="my-3"/>
+                                <div class="card-text">
+                                    {{ aspect }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+    </div>
+
+
+
+    <div class="jumbotron" style="padding: 2rem 2rem;">
+        <h3>Polarity Section</h3>
+        <hr class="my-4">
+          <div class="row mt-4">
+                    <!-- Train Polarity Model with Parameters -->
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Train New Polarity Model</h5>
+                                <hr class="my-3"/>
+                                <div class="card-text">
+                                    <form action="">
+                                        <div class="form-group row">
+                                            <label for="epoch" class="col-md-2 col-form-label">Epoch</label>
+                                            <div class="col-md-10">
+                                              <input type="number" value="1" name="epoch" min="1" max="50" class="form-control" id="epoch">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="dim" class="col-md-2 col-form-label">Dim</label>
+                                            <div class="col-md-10">
+                                              <select class="form-control" name="dim" id="dim">
+                                                  <option value="100" selected>100</option>
+                                                  <option value="200">200</option>
+                                                  <option value="300">300</option>
+                                              </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="ngram" class="col-md-2 col-form-label">NGram</label>
+                                            <div class="col-md-10">
+                                              <input type="number" name="ngram" value="2" min="1" max="5" class="form-control" id="ngram">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="lr" class="col-md-2 col-form-label">LR</label>
+                                            <div class="col-md-10">
+                                              <input type="number" name="lr" min="0" value="0.5" max="1" step="0.1" class="form-control" id="lr">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="loss" class="col-md-2 col-form-label">Loss</label>
+                                            <div class="col-md-10">
+                                              <select name="loss" id="loss" class="form-control">
+                                                  <option value="hs">hs</option>
+                                                  <option value="softmax">softmax</option>
+                                              </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-md-12 align-right">
+                                                <input type="button" class="btn btn-primary" value="Train Model" />
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Test Polarity Model -->
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Test Polarity Model</h5>
+                                <div class="card-text">
+                                    Model Properties and Text Box
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+    </div>
+
+{% endblock %}

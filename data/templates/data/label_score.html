@@ -1,0 +1,26 @@
+{% extends 'data/base.html' %}
+
+{% block page_title %} Total Labeled Sentence {% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        <div class="card">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Label Score</li>
+            <li class="list-group-item">{{ total }}</li>
+          </ul>
+        </div>
+    </div>
+
+    <div class="col-md-9">
+        <div class="card pt-2 pb-3">
+        <h2 class="ml-3">Last Ten</h2>
+            {% for item in last_ten %}
+                <div class="col-md-12">- {{ item.sentence.text }}</div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

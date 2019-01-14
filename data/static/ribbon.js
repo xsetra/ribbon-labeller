@@ -110,6 +110,6 @@ function saveLabels(uri) {
                 alert(resp);
             }
         });
-        location.reload();
+        setTimeout(location.reload.bind(location), 1300);
     }
 }

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import datetime
 
 # Create your models here.
 
@@ -18,3 +19,4 @@ class LabeledSentence(models.Model):
     correctness = models.BooleanField('Correctness', null=False, default=True)
     sentence = models.ForeignKey(Sentence, on_delete=models.CASCADE)
     contributor = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateTimeField('Date to labeled', default=datetime.now(), null=False)

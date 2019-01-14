@@ -53,3 +53,12 @@ def save_labels(request):
     x = LabeledSentence.objects.bulk_create(labeled_sentences)
     print(x)
     return HttpResponse("Saved All Labels")
+
+
+@login_required
+@permission_required('data.add_labeledsentence')
+def label_score(request):
+    labeled_sentence = LabeledSentence.objects.filter(contributor=request.user).order_by('-date')
+    total = labeled_sentence.count()
+    last_ten = labeled_sentence[:10]
+    return render(request, 'data/label_score.html', {'total': total, 'last_ten': last_ten})

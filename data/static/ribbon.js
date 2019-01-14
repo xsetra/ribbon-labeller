@@ -113,3 +113,25 @@ function saveLabels(uri) {
         location.reload();
     }
 }
+
+
+/*
+Create New Model.
+ */
+function trainModel(uri) {
+    var epoch = parseInt($('#epoch').val());
+    var dim = parseInt($('#dim').val());
+    var ngram = parseInt($('#ngram').val());
+    var lr = parseFloat($('#lr').val());
+    var loss = $('#loss').val();
+
+    var csrftoken = getCookie('csrftoken');
+    before_ajax(csrftoken);
+
+    $.post({
+        url: uri,
+        type: 'POST',
+        data: data,
+        
+    })
+}

@@ -18,3 +18,14 @@ class LabeledSentence(models.Model):
     correctness = models.BooleanField('Correctness', null=False, default=True)
     sentence = models.ForeignKey(Sentence, on_delete=models.CASCADE)
     contributor = models.ForeignKey(User, on_delete=models.CASCADE)
+
+
+class MLModels(models.Model):
+    name = models.CharField('Name', max_length=30, null=False, default='')
+    model_filename = models.CharField('Model Filename', max_length=60, null=False, default='')
+    epoch = models.IntegerField('Epoch')
+    dim = models.IntegerField('Dim')
+    ngram = models.IntegerField('Ngram')
+    lr = models.FloatField('Learning Rate')
+    loss = models.CharField('Loss Function', max_length=30, null=False, default='hs')
+

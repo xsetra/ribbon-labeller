@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required, permission_required
-from data.models import Sentence, LabeledSentence
+from data.models import Sentence, LabeledSentence, MLModels
 import json
 import random
+import fasttext
 
 # Create your views here.
 
@@ -27,9 +28,11 @@ def label(request):
 
     return render(request, 'data/label.html', context=context)
 
+
 @login_required
 def index(request):
     return render(request, 'data/base.html', context={'nav_home': 'active'})
+
 
 @login_required
 @permission_required('data.add_labeledsentence')
@@ -53,3 +56,76 @@ def save_labels(request):
     x = LabeledSentence.objects.bulk_create(labeled_sentences)
     print(x)
     return HttpResponse("Saved All Labels")
+
+
+def save_uploaded_file(f, name='dataset.txt', split='train'):
+    with open(name+'_'+split+'.txt', 'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
+
+
+@login_required
+@permission_required('admin.add_logentry')
+def upload_dataset(request):
+    if request.method == 'POST':
+        save_uploaded_file(request.FILES['dataset'], request.POST['type'], request.POST['data_split'])
+        return render(request, 'data/upload_dataset.html', {'message': 'The dataset successfully uploaded.'})
+    else:
+        return render(request, 'data/upload_dataset.html')
+
+
+# MODEL TRAIN TEST PHASE
+
+class SupervisedLearner:
+
+    def __init__(self, train_file, test_file, epoch, dim, word_ngrams, lr, loss):
+        self.train_file = train_file
+        self.test_file = test_file
+        self.epoch = epoch
+        self.dim = dim
+        self.word_ngrams = word_ngrams
+        self.lr = lr
+        self.loss = loss
+        self.classifier = None
+        self.results = None
+        self.output_file = "{}__LOSS{}-LR{}__E{}-D{}-N{}".format(self.train_file,
+                                                                 self.loss,
+                                                                 self.lr,
+                                                                 self.epoch,
+                                                                 self.dim,
+                                                                 self.word_ngrams)
+
+    def build_model(self):
+        self.classifier = fasttext.supervised(input_file=self.train_file,
+                                              epoch=self.epoch,
+                                              dim=self.dim,
+                                              word_ngrams=self.word_ngrams,
+                                              lr=self.lr,
+                                              loss=self.loss,
+                                              output=self.output_file,
+                                              bucket=2000000)
+
+    def test_model(self):
+        self.results = self.classifier.test(self.test_file)
+
+
+@login_required
+@permission_required('admin.add_logentry')
+def train_model(request):
+    aspect_model = MLModels.objects.filter(name='aspect')
+    polarity_model = MLModels.objects.filter(name='polarity')
+
+    payload = {}
+    if aspect_model.count() != 0:
+        payload['aspect'] = aspect_model[0]
+    if polarity_model.count() != 0:
+        payload['polarity'] = polarity_model[0]
+
+    # RETURN Phase
+    return render(request, 'data/train_test_models.html', context=payload)
+
+
+@login_required
+@permission_required('admin.add_logentry')
+def train_model_aspect(request):
+    pass

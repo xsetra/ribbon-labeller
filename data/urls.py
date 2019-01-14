@@ -8,4 +8,8 @@ urlpatterns = [
     path('label/', views.label, name='label'),
 
     path('save/labels/', views.save_labels, name='save_labels'),
+    path('upload/dataset/', views.upload_dataset, name='upload_dataset'),
+    path('train/model/', views.train_model, name='train_model'),
+    path('train/aspect/', views.train_model_aspect, name='train_aspect'),
+
 ]
